@@ -1,0 +1,4 @@
+algorithm: 'token_bucket'
+limit: 100
+period: 1
+time_unit: 'second'

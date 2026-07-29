@@ -1,0 +1,3 @@
+/home/taingo/c/network/proxy-server/build/CMakeFiles/rate_limiter.dir
+/home/taingo/c/network/proxy-server/build/CMakeFiles/edit_cache.dir
+/home/taingo/c/network/proxy-server/build/CMakeFiles/rebuild_cache.dir
