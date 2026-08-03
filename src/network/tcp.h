@@ -11,8 +11,8 @@ namespace RateLimiter {
 
             void handleClient(int client_fd, const std::string& client_ip);
         public:
-            TcpServer(int port, IRateLimiter& rate_limiter);
-            ~TcpServer();
+            TcpServer(int port, IRateLimiter& limiter) : port_(port), rate_limiter_(limiter) {};
+            ~TcpServer() {};
             void start();
     };
 }
