@@ -1,3 +1,4 @@
+#pragma once
 #include "model/ratelimit_config.h"
 #include <string>
 #include <yaml-cpp/yaml.h>

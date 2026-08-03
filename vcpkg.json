@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "yaml-cpp",
+    "redis-plus-plus"
+  ]
+}

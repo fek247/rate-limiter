@@ -1,3 +1,4 @@
+#pragma once
 #include "algorithm.h"
 #include "time_unit.h"
 
