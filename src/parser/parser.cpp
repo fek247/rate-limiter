@@ -19,7 +19,7 @@ namespace RateLimiter {
             config.limit = node["limit"].as<unsigned int>();
         }
         if (node["period"]) {
-            config.period = node["limit"].as<unsigned int>();
+            config.period = node["period"].as<unsigned int>();
         }
         if (node["time_unit"]) {
             config.time_unit = stringToTimeUnit(node["time_unit"].as<std::string>());
