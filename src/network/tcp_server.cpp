@@ -10,7 +10,7 @@ namespace RateLimiter {
             });
         }
 
-        while (true) {}
+        std::promise<void>().get_future().wait();
     }
 
     void TcpServer::workerLoop() {

@@ -6,6 +6,7 @@
 #include <string>
 #include <sys/epoll.h>
 #include <fcntl.h>
+#include <future>
 #include "http/response.h"
 #include "limiter/rate_limiter.h"
 #include "thread_pool.h"
