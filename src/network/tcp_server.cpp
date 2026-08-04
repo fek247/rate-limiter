@@ -106,14 +106,19 @@ namespace RateLimiter {
 
     void TcpServer::handleClient(int client_fd, const std::string& client_ip) {
         char buffer[1024];
-        std::string response_str;
-        if (rate_limiter_.allowRequest(client_ip)) {
-            response_str = Response::ok();
-        } else {
-            response_str = Response::tooManyRequests();
-        }
+        int byteReceived = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
 
-        write(client_fd, response_str.c_str(), response_str.length());
+        if (byteReceived > 0) {
+            std::string response_str;
+            if (rate_limiter_.allowRequest(client_ip)) {
+                response_str = Response::ok();
+            } else {
+                response_str = Response::tooManyRequests();
+            }
+
+            write(client_fd, response_str.c_str(), response_str.length());
+        }
+        
         close(client_fd);
     }
 }
