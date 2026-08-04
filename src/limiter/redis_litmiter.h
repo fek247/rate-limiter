@@ -1,7 +1,7 @@
 #pragma once
 #include <sw/redis++/redis++.h>
 #include <string>
-#include "../model/algorithm.h"
+#include "model/algorithm.h"
 #include "rate_limiter.h"
 #include <algorithm>
 

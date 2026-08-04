@@ -3,7 +3,7 @@
 #include <sw/redis++/redis++.h>
 #include "parser/parser.h"
 #include "limiter/redis_litmiter.h"
-#include "network/tcp.h"
+#include "network/tcp_server.h"
 #include "model/algorithm.h"
 
 using namespace std;
