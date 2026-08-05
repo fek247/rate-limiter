@@ -6,6 +6,6 @@ namespace RateLimiter {
         public:
             virtual ~IRateLimiter() = default;
 
-            virtual bool allowRequest(const std::string& clientIp) = 0;
+            virtual bool allowRequest(const std::string& key) = 0;
     };
 }

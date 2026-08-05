@@ -10,7 +10,6 @@ find_package(redis++ CONFIG REQUIRED)
 add_executable(rate_limiter 
     src/main.cpp 
     src/parser/parser.cpp
-    src/limiter/redis_limiter.cpp 
     src/network/tcp_server.cpp
     src/network/thread_pool.cpp
     src/http/response.cpp

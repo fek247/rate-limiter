@@ -21,12 +21,12 @@ namespace RateLimiter {
         private:
             int server_fd_;
             int port_;
-            IRateLimiter& rate_limiter_;
+            std::unique_ptr<IRateLimiter> rate_limiter_;
 
             void handleClient(int client_fd, const std::string& client_ip);
             bool setNonBlocking(int fd);
         public:
-            TcpServer(int port, IRateLimiter& limiter) : port_(port), rate_limiter_(limiter) {};
+            TcpServer(int port, std::unique_ptr<IRateLimiter> limiter) : port_(port), rate_limiter_(std::move(limiter)) {};
             ~TcpServer() {};
             void start();
             void workerLoop();

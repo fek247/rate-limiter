@@ -6,15 +6,15 @@
 namespace RateLimiter {
     enum class Algorithm {
         TOKEN_BUCKET,
-        LEAKING_BUCKET,
-        FIXED_SLIDING_WINDOWS,
+        SLIDING_WINDOW_COUNTER,
+        FIXED_WINDOW_COUNTER
     };
 
     inline Algorithm stringToAlgorithm(const std::string& str) {
         static const std::unordered_map<std::string, Algorithm> stringToEnumMap = {
             {"token_bucket", Algorithm::TOKEN_BUCKET},
-            {"leaking_bucket", Algorithm::LEAKING_BUCKET},
-            {"fixed_sliding_windows", Algorithm::FIXED_SLIDING_WINDOWS},
+            {"sliding_window_counter", Algorithm::SLIDING_WINDOW_COUNTER},
+            {"fixed_window_counter", Algorithm::FIXED_WINDOW_COUNTER},
         };
 
         auto it = stringToEnumMap.find(str);

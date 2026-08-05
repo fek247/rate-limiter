@@ -110,7 +110,7 @@ namespace RateLimiter {
 
         if (byteReceived > 0) {
             std::string response_str;
-            if (rate_limiter_.allowRequest(client_ip)) {
+            if (rate_limiter_->allowRequest(client_ip)) {
                 response_str = Response::ok();
             } else {
                 response_str = Response::tooManyRequests();
