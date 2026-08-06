@@ -1,0 +1,3 @@
+- support time unit config
+- add catch2 set up
+- write unit test
