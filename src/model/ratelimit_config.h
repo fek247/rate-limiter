@@ -7,6 +7,7 @@ namespace RateLimiter {
        Algorithm algorithm{Algorithm::TOKEN_BUCKET};
        unsigned int limit{100};
        unsigned int period;
+       unsigned int fill_rate;
        TimeUnit time_unit{TimeUnit::SECOND};
     };
 }

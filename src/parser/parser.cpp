@@ -24,6 +24,9 @@ namespace RateLimiter {
         if (node["time_unit"]) {
             config.time_unit = stringToTimeUnit(node["time_unit"].as<std::string>());
         }
+        if (node["fill_rate"]) {
+            config.fill_rate = node["fill_rate"].as<unsigned int>();
+        }
 
         return config;
     }
