@@ -3,8 +3,8 @@
 
 namespace RateLimiter {
     enum class TimeUnit {
-        SECOND,
         MILLISECOND,
+        SECOND,
         MINUTE,
         HOUR,
     };

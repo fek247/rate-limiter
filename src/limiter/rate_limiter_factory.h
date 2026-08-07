@@ -15,11 +15,11 @@ namespace RateLimiter {
                 switch (algorithm)
                 {
                     case Algorithm::FIXED_WINDOW_COUNTER:
-                        return std::make_unique<FixedWindowLimiter>(redis_url, config.limit, config.period);
+                        return std::make_unique<FixedWindowLimiter>(redis_url, config.limit, config.period, config.time_unit);
                     case Algorithm::SLIDING_WINDOW_COUNTER:
-                        return std::make_unique<SlidingWindowLimiter>(redis_url, config.limit, config.period);
+                        return std::make_unique<SlidingWindowLimiter>(redis_url, config.limit, config.period, config.time_unit);
                     case Algorithm::TOKEN_BUCKET:
-                        return std::make_unique<TokenBucketLimiter>(redis_url, config.limit, config.period, config.fill_rate);
+                        return std::make_unique<TokenBucketLimiter>(redis_url, config.limit, config.period, config.fill_rate, config.time_unit);
                     default:
                         break;
                 }

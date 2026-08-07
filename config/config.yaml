@@ -2,4 +2,4 @@ algorithm: 'token_bucket'
 limit: 100
 period: 1
 fill_rate: 10
-time_unit: 'second'
+time_unit: 'minute'
