@@ -3,6 +3,7 @@
     "yaml-cpp",
     "redis-plus-plus",
     "grpc",
-    "protobuf"
+    "protobuf",
+    "crow"
   ]
 }

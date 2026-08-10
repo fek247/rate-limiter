@@ -8,6 +8,7 @@ find_package(yaml-cpp CONFIG REQUIRED)
 find_package(redis++ CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
+find_package(Crow REQUIRED)
 
 add_executable(rate_limiter 
     src/main.cpp 
@@ -15,6 +16,7 @@ add_executable(rate_limiter
     src/network/tcp_server.cpp
     src/network/thread_pool.cpp
     src/http/response.cpp
+    src/api/crow_service.cpp
 )
 
 target_include_directories(rate_limiter PRIVATE 
@@ -27,4 +29,5 @@ target_link_libraries(rate_limiter PRIVATE
     redis++::redis++_static
     gRPC::grpc++
     protobuf::libprotobuf
+    Crow::Crow
 )

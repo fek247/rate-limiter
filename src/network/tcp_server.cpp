@@ -3,17 +3,16 @@
 namespace RateLimiter {
     void TcpServer::start() {
         int num_cores = std::thread::hardware_concurrency();
-        ThreadPool thread_pool;
+        thread_pool_ = std::make_unique<ThreadPool>(num_cores);
         for (int i = 0; i < num_cores; i++) {
-            thread_pool.enqueue([this] {
+            thread_pool_->enqueue([this] {
                 workerLoop();
             });
         }
-
-        std::promise<void>().get_future().wait();
     }
 
     void TcpServer::workerLoop() {
+        running_ = true;
         int server_fd = socket(AF_INET, SOCK_STREAM, 0);
         if (server_fd < 0) {
             perror("Welcome socket failed");
@@ -50,7 +49,17 @@ namespace RateLimiter {
             return;
         }
 
-        while (true) {
+        // Add stop fd
+        int stop_fd = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+        stop_fds_.push_back(stop_fd);
+        struct epoll_event stop_event;
+        stop_event.events = EPOLLIN;
+        stop_event.data.fd = stop_fd;
+        if (epoll_ctl(epfd, EPOLL_CTL_ADD, stop_fd, &stop_event) < 0) {
+            perror("epoll ctl stop fd failed");
+        }
+
+        while (running_) {
             int num_ready = epoll_wait(epfd, events, MAX_EVENT, -1);
 
             for (int i = 0; i < num_ready; i++) {
@@ -79,12 +88,19 @@ namespace RateLimiter {
                         client_event.data.ptr = context;
                         epoll_ctl(epfd, EPOLL_CTL_ADD, connect_fd, &client_event);
                     }
+                } else if (events[i].data.fd == stop_fd) {
+                    uint64_t val;
+                    read(stop_fd, &val, sizeof(val));
                 } else {
                     ConnectionContext* context = static_cast<ConnectionContext*>(events[i].data.ptr);
                     handleClient(context->fd, context->ip);
                 }
             }
         }
+
+        close(stop_fd);
+        close(server_fd);
+        close(epfd);
     }
 
     bool TcpServer::setNonBlocking(int fd) {
@@ -120,5 +136,22 @@ namespace RateLimiter {
         }
         
         close(client_fd);
+    }
+
+    void TcpServer::stop() {
+        if (!running_) {
+            return;
+        }
+
+        running_ = false;
+
+        uint64_t u = 1;
+        for (int stop_fd : stop_fds_) {
+            write(stop_fd, &u, sizeof(u));
+        }
+
+        if (thread_pool_) {
+            thread_pool_.reset();
+        }
     }
 }

@@ -7,6 +7,7 @@
 #include <sys/epoll.h>
 #include <fcntl.h>
 #include <future>
+#include <sys/eventfd.h>
 #include "http/response.h"
 #include "limiter/rate_limiter.h"
 #include "thread_pool.h"
@@ -19,8 +20,10 @@ namespace RateLimiter {
 
     class TcpServer {
         private:
-            int server_fd_;
+            std::vector<int> stop_fds_;
             int port_;
+            bool running_;
+            std::unique_ptr<ThreadPool> thread_pool_;
             std::unique_ptr<IRateLimiter> rate_limiter_;
 
             void handleClient(int client_fd, const std::string& client_ip);
@@ -30,5 +33,6 @@ namespace RateLimiter {
             ~TcpServer() {};
             void start();
             void workerLoop();
+            void stop();
     };
 }

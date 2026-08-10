@@ -1,5 +1,6 @@
+- grpc to backend server
+- add graceful shutdown
 - add catch2 set up
 - write unit test
-- grpc to backend server
 - support rate limit by route
 - dynamic config (green deploy)
