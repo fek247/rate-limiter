@@ -1,6 +1,8 @@
 {
   "dependencies": [
     "yaml-cpp",
-    "redis-plus-plus"
+    "redis-plus-plus",
+    "grpc",
+    "protobuf"
   ]
 }

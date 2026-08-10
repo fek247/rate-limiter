@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(yaml-cpp CONFIG REQUIRED)
 find_package(redis++ CONFIG REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
 
 add_executable(rate_limiter 
     src/main.cpp 
@@ -23,4 +25,6 @@ target_include_directories(rate_limiter PRIVATE
 target_link_libraries(rate_limiter PRIVATE 
     yaml-cpp::yaml-cpp 
     redis++::redis++_static
+    gRPC::grpc++
+    protobuf::libprotobuf
 )
