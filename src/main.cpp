@@ -12,6 +12,14 @@
 using namespace RateLimiter;
 
 std::promise<void> shutdownSignaler;
+std::once_flag signal_flag;
+
+void signal_handler(int signal) {
+    std::call_once(signal_flag, []() {
+        std::cout << "\nMain Ctr+C pressed. Shutting down gracefully..." << std::endl;
+        shutdownSignaler.set_value();
+    });
+}
 
 int main(int argc, char* argv[]) {
     std::string config_file_path = (argc > 1) ? argv[1] : "config.yaml";
@@ -34,6 +42,9 @@ int main(int argc, char* argv[]) {
 
         proxyServer.start();
         std::cout << "Proxy Server listening on port 8000..." << std::endl;
+
+        std::signal(SIGTERM, signal_handler);
+        std::signal(SIGINT, signal_handler);
         shutdownSignaler.get_future().wait();
 
         // Stop http server

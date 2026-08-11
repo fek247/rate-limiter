@@ -3,7 +3,7 @@
 namespace RateLimiter {
     void TcpServer::start() {
         int num_cores = std::thread::hardware_concurrency();
-        thread_pool_ = std::make_unique<ThreadPool>(num_cores);
+        thread_pool_ = std::make_unique<ThreadPool>(num_cores - 1);
         for (int i = 0; i < num_cores; i++) {
             thread_pool_->enqueue([this] {
                 workerLoop();
@@ -12,7 +12,6 @@ namespace RateLimiter {
     }
 
     void TcpServer::workerLoop() {
-        running_ = true;
         int server_fd = socket(AF_INET, SOCK_STREAM, 0);
         if (server_fd < 0) {
             perror("Welcome socket failed");
@@ -51,7 +50,7 @@ namespace RateLimiter {
 
         // Add stop fd
         int stop_fd = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
-        stop_fds_.push_back(stop_fd);
+        safe_insert(stop_fd);
         struct epoll_event stop_event;
         stop_event.events = EPOLLIN;
         stop_event.data.fd = stop_fd;
@@ -153,5 +152,10 @@ namespace RateLimiter {
         if (thread_pool_) {
             thread_pool_.reset();
         }
+    }
+
+    void TcpServer::safe_insert(int val) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        stop_fds_.push_back(val);
     }
 }

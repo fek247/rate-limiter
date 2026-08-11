@@ -6,6 +6,8 @@ namespace RateLimiter {
             return "OK";
         });
 
+        app_.signal_clear();
+
         use_multi_thread_ ? app_.port(port_).multithreaded().run()
             : app_.port(port_).run();
     }

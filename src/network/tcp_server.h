@@ -7,6 +7,8 @@
 #include <sys/epoll.h>
 #include <fcntl.h>
 #include <future>
+#include <mutex>
+#include <atomic>
 #include <sys/eventfd.h>
 #include "http/response.h"
 #include "limiter/rate_limiter.h"
@@ -22,10 +24,10 @@ namespace RateLimiter {
         private:
             std::vector<int> stop_fds_;
             int port_;
-            bool running_;
+            std::atomic<bool> running_{true};
             std::unique_ptr<ThreadPool> thread_pool_;
             std::unique_ptr<IRateLimiter> rate_limiter_;
-
+            std::mutex mutex_;
             void handleClient(int client_fd, const std::string& client_ip);
             bool setNonBlocking(int fd);
         public:
@@ -34,5 +36,6 @@ namespace RateLimiter {
             void start();
             void workerLoop();
             void stop();
+            void safe_insert(int val);
     };
 }
