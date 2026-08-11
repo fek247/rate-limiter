@@ -1,5 +1,4 @@
 - grpc to backend server
-- add graceful shutdown
 - add catch2 set up
 - write unit test
 - support rate limit by route
