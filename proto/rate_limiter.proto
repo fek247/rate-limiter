@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package rate_limiter;
+
+message HttpRequest {
+    string name = 1;
+}
+
+message HttpResponse {
+    string message = 1;
+}
+
+service RateLimiterService {
+    rpc ForwardRequest (HttpRequest) returns (HttpResponse) {}
+}
